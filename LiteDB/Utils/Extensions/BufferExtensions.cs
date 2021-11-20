@@ -117,9 +117,14 @@ namespace LiteDB
         /// </summary>
         public static unsafe void ToBytes(this Int64 value, byte[] array, int startIndex)
         {
-            fixed (byte* ptr = &array[startIndex])
+            /*            fixed (byte* ptr = &array[startIndex])
+                        {
+                            *(Int64*)ptr = value;
+                        }*/
+            var bytes = BitConverter.GetBytes(value);
+            for (var i = 0; i < bytes.Length; i++)
             {
-                *(Int64*)ptr = value;
+                array[startIndex + i] = bytes[i];
             }
         }
 
@@ -150,9 +155,14 @@ namespace LiteDB
         /// </summary>
         public static unsafe void ToBytes(this UInt64 value, byte[] array, int startIndex)
         {
-            fixed (byte* ptr = &array[startIndex])
+            /*            fixed (byte* ptr = &array[startIndex])
+                        {
+                            *(UInt64*)ptr = value;
+                        }*/
+            var bytes = BitConverter.GetBytes(value);
+            for (var i = 0; i < bytes.Length; i++)
             {
-                *(UInt64*)ptr = value;
+                array[startIndex + i] = bytes[i];
             }
         }
 
@@ -174,7 +184,13 @@ namespace LiteDB
         /// </summary>
         public static unsafe void ToBytes(this Double value, byte[] array, int startIndex)
         {
-            ToBytes(*(UInt64*)(&value), array, startIndex);
+//            ToBytes(*(UInt64*)(&value), array, startIndex);
+            var bytes = BitConverter.GetBytes(value);
+            for (var i = 0; i < bytes.Length; i++)
+            {
+                array[startIndex + i] = bytes[i];
+            }
+
 
             //fixed (byte* ptr = &array[startIndex])
             //{
